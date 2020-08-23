@@ -2,7 +2,6 @@
 
 namespace Pff\HyperfOptions\Concerns;
 
-
 use Hyperf\Constants\ConstantsCollector;
 use Hyperf\Utils\Str;
 
