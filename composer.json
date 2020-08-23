@@ -1,0 +1,44 @@
+{
+    "name": "pifeifei/hyperf-options",
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "hyperf"
+    ],
+    "description": "",
+    "autoload": {
+        "psr-4": {
+            "Pff\\HyperfOptions\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Pff\\HyperfTest\\": "tests"
+        }
+    },
+    "require": {
+        "php": ">=7.2",
+        "hyperf/constants": "~2.0.0",
+        "hyperf/db-connection": "~2.0.0"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^2.14",
+        "phpstan/phpstan": "^0.12.5",
+        "hyperf/testing": "~2.0.0",
+        "swoft/swoole-ide-helper": "dev-master"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "co-phpunit -c phpunit.xml --colors=always",
+        "analyse": "phpstan analyse --memory-limit 300M -l 0 ./src",
+        "cs-fix": "php-cs-fixer fix $1"
+    },
+    "extra": {
+        "hyperf": {
+            "config": "Pff\\HyperfOptions\\ConfigProvider"
+        }
+    }
+}
