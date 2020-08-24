@@ -1,40 +1,60 @@
-# component-creater
+# hyperf options
 
 ```
-composer create-project hyperf/component-creater
+composer require pifeifei/hyperf-options
 ```
 
 ## 使用
 
 ```php
-// App\Constants/AbstractConstants.php
+// app/Constants/AbstractConstants.php
 namespace App\Constants;
-use Hyperf\Constants\AbstractConstants as BaseAbstractConstants;
-use Pff\HyperfOptions\Concerns\OptionsConstants;
-class AbstractConstants extends BaseAbstractConstants
+class AbstractConstants extends \Hyperf\Constants\AbstractConstants
 {
-    use OptionsConstants;
+    use \Pff\HyperfOptions\Concerns\OptionsConstants;
 }
+// app/Constants/Status.php
+class Status extends AbstractConstants
+{
+    /**
+     * @Message("ok")
+     * @Info("content 1")
+     * @Desc("sequential_array")
+     * @GoodsInfoDesc("abcde")
+     */
+    const SERVER_OK = 1;
+
+    /**
+     * @Message("delete")
+     * @Info("content -1")
+     * @lang("validation.sequential_array")
+     */
+    const SERVER_DELETE = -1;
+
+    /**
+     * @Message("forbid")
+     * @Info("content 0")
+     */
+    const SERVER_FORBID = 0;
+}
+
 
 // app/Model/Model.php
 namespace App\Model;
-
-use Pff\HyperfOptions\Concerns\Options;
-use Hyperf\DbConnection\Model\Model as BaseModel;
-abstract class Model extends BaseModel 
+abstract class Model extends \Hyperf\DbConnection\Model\Model 
 {
-    use Options;
+    use \Pff\HyperfOptions\Concerns\Options;
 }
 
 namespace App\Model;
 class Test extends Model
 {
-        /* @var array */
-        public $options = [
-    //        'status' => [Status::class, 'Message'],
-    //        'status' => Status::class, // 默认 Message
-            'status' => [\App\Constants\ErrorCode::class, 'info']
-        ];
+    /* @var array */
+    public $options = [
+    //    'status' => [Status::class, 'Message'],
+    //    'status' => Status::class, // default: Message
+        'status' => [\App\Constants\Status::class, 'info']
+    ];
 
     /**
      * @return mixed
@@ -51,9 +71,9 @@ class Test extends Model
 }
 
 
-// 使用
+// use
 $test = new \App\Model\Test();
-$result = $test::query()->orderByDesc('id')->first();
-var_dump($result->status_option);
-var_dump($result->status_options);
+$result = $test::query()->orderByDesc('id')->first(); // {"id":1,"status":1}
+var_dump($result->status_option); // return：'content 1'
+var_dump($result->status_options); // return: [1=>'content 1', 0=>'content 0', -1 => 'content -1']
 ```
